@@ -1,6 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bphyypvlrplrt"]
+[gd_scene load_steps=10 format=3 uid="uid://bphyypvlrplrt"]
 
-[ext_resource type="Texture2D" uid="uid://dotobeeqpnc6m" path="res://Sprites/bag_idle.png" id="1_o8fkt"]
+[ext_resource type="Script" path="res://Scripts/PlayerController.cs" id="1_2m7mb"]
+[ext_resource type="Texture2D" uid="uid://djpah8fuvxnsn" path="res://Sprites/Bag1.png" id="2_xl40l"]
+[ext_resource type="Texture2D" uid="uid://ce3cuxcl1imxr" path="res://icon.svg" id="3_ao4ft"]
 
 [sub_resource type="Animation" id="Animation_nf3kk"]
 length = 0.001
@@ -34,21 +36,74 @@ tracks/0/keys = {
 "values": [0, 1]
 }
 
+[sub_resource type="Animation" id="Animation_l3ey8"]
+resource_name = "walk"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [6, 7, 8, 9, 10, 11]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_dl4a5"]
 _data = {
 "RESET": SubResource("Animation_nf3kk"),
-"idle": SubResource("Animation_12vd8")
+"idle": SubResource("Animation_12vd8"),
+"walk": SubResource("Animation_l3ey8")
 }
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_42bff"]
+size = Vector2(80, 163)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bpxyf"]
+size = Vector2(1176, 80)
 
 [node name="Scene" type="Node2D"]
 
-[node name="Bag" type="Sprite2D" parent="."]
-position = Vector2(541.063, 381.895)
-scale = Vector2(4.31855, 4.31855)
-texture = ExtResource("1_o8fkt")
-hframes = 2
+[node name="Bag" type="CharacterBody2D" parent="." node_paths=PackedStringArray("animationPlayer")]
+position = Vector2(528, 320)
+script = ExtResource("1_2m7mb")
+gravity = 4000.0
+fallingGravity = 3000.0
+fallingGravityMul = 1.1
+maxFallSpeed = 3000.0
+jumpForce = 1000.0
+maxSpeed = 400.0
+animationPlayer = NodePath("Sprite/AnimationPlayer")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Bag"]
+[node name="Sprite" type="Sprite2D" parent="Bag"]
+scale = Vector2(4.31855, 4.31855)
+texture = ExtResource("2_xl40l")
+hframes = 6
+vframes = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Bag/Sprite"]
 libraries = {
 "": SubResource("AnimationLibrary_dl4a5")
 }
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bag"]
+position = Vector2(0, 5.5)
+shape = SubResource("RectangleShape2D_42bff")
+
+[node name="Camera2D" type="Camera2D" parent="Bag"]
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(568, 552)
+
+[node name="Sprite2D" type="Sprite2D" parent="Ground"]
+position = Vector2(-15, 557)
+scale = Vector2(9.188, 9.188)
+texture = ExtResource("3_ao4ft")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+position = Vector2(-4, 8)
+shape = SubResource("RectangleShape2D_bpxyf")
