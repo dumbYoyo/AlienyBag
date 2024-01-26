@@ -1,0 +1,54 @@
+[gd_scene load_steps=5 format=3 uid="uid://bphyypvlrplrt"]
+
+[ext_resource type="Texture2D" uid="uid://dotobeeqpnc6m" path="res://Sprites/bag_idle.png" id="1_o8fkt"]
+
+[sub_resource type="Animation" id="Animation_nf3kk"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_12vd8"]
+resource_name = "idle"
+length = 0.65
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dl4a5"]
+_data = {
+"RESET": SubResource("Animation_nf3kk"),
+"idle": SubResource("Animation_12vd8")
+}
+
+[node name="Scene" type="Node2D"]
+
+[node name="Bag" type="Sprite2D" parent="."]
+position = Vector2(541.063, 381.895)
+scale = Vector2(4.31855, 4.31855)
+texture = ExtResource("1_o8fkt")
+hframes = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Bag"]
+libraries = {
+"": SubResource("AnimationLibrary_dl4a5")
+}
